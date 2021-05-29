@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from 'express';
 import mongoose from 'mongoose';
+import { Blog } from './models/blogs';
 
 const app: Application = express();
 const port: number = 3000;
@@ -13,5 +14,41 @@ mongoose
   .catch((error) => console.log(error));
 
 app.get('/', (request: Request, response: Response) => {
-  response.send('Hello World!');
+  response.redirect('/all-blogs');
+});
+
+app.get('/add-blog', (request: Request, response: Response) => {
+  const blog = new Blog({
+    title: 'My Blog',
+    author: 'Me',
+    content: 'Hello World!',
+  });
+
+  blog.save()
+    .then((result) => {
+      response.send(result);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+app.get('/all-blogs', (request: Request, response: Response) => {
+  Blog.find()
+    .then((result) => {
+      response.send(result);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+app.get('/single-blog', (request: Request, response: Response) => {
+  Blog.findById('60b252de3f4c983931e03186')
+    .then((result) => {
+      response.send(result);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 });
