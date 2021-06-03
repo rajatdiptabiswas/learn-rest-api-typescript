@@ -13,8 +13,13 @@ const blogSchema: Schema = new Schema({
     type: String,
     required: true,
   },
+  imageURL: {
+    type: String,
+  }
 }, {
   timestamps: true,
 });
 
-export const Blog = model('Blog', blogSchema);
+const Blog = model('Blog', blogSchema);
+
+export default Blog;
