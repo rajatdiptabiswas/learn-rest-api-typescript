@@ -2,7 +2,7 @@ import express, { Application, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import log from './logger';
-import Blog from './models/blogs';
+import blogRoutes from './routes/blogRoutes';
 
 const app: Application = express();
 const port: number = (process.env.PORT) ? +process.env.PORT : 3000;
@@ -31,87 +31,14 @@ mongoose
 
 // routes
 // home
-// GET
 app.get('/', (request: Request, response: Response) => {
-  response.redirect('/blogs/all');
+  response.redirect('/blogs');
 });
 
-// create
-// POST
-app.post('/blogs/add', (request: Request, response: Response) => {
-  const blog = new Blog(request.body);
-  
-  blog.save()
-    .then((result) => {
-      response.status(201).send(result);
-    })
-    .catch((error: Error) => {
-      log.error(error);
-      response.status(500).send(error.message);
-    });
-});
+// blogs
+app.use('/blogs', blogRoutes);
 
-// read all
-// GET
-app.get('/blogs/all', (request: Request, response: Response) => {
-  Blog.find().sort({ createdAt : -1 })
-    .then((result) => {
-      response.status(200).send(result);
-    })
-    .catch((error: Error) => {
-      log.error(error);
-      response.status(500).send(error.message);
-    });
-});
-
-// read single
-// GET
-app.get('/blogs/:id', (request: Request, response: Response) => {
-  Blog.findById(request.params.id)
-    .then((result) => {
-      response.status(200).send(result);
-    })
-    .catch((error: Error) => {
-      log.error(error);
-      response.status(500).send(error.message);
-    });
-});
-
-// update single
-// PATCH
-app.patch('/blogs/:id', (request: Request, response: Response) => {
-  Blog.findByIdAndUpdate(request.params.id, request.body, { new: true })
-    .then((result) => {
-      response.status(200).send(result);
-    })
-    .catch((error: Error) => {
-      log.error(error);
-      response.status(500).send(error.message);
-    });
-});
-
-// update single
-// PUT
-app.put('/blogs/:id', (request: Request, response: Response) => {
-  Blog.findByIdAndUpdate(request.params.id, request.body, { new: true, overwrite: true })
-    .then((result) => {
-      response.status(200).send(result);
-    })
-    .catch((error: Error) => {
-      log.error(error);
-      response.status(500).send(error.message);
-    });
-});
-
-// delete single
-// DELETE
-app.delete('/blogs/:id', (request: Request, response: Response) => {
-  Blog.findByIdAndDelete(request.params.id)
-    .then((result) => {
-      response.status(200).send(result);
-    })
-    .catch((error: Error) => {
-      log.error(error);
-      response.status(500).send(error.message);
-    });
+// 404
+app.use((request: Request, response: Response) => {
+  response.status(404).send('<h1>404</h1>Page Not Found :(');
 });
