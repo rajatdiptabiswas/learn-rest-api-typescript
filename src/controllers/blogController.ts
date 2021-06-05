@@ -4,8 +4,9 @@ import Blog from '../models/blogs';
 
 const createBlog = (request: Request, response: Response) => {
   const blog = new Blog(request.body);
-  
-  blog.save()
+
+  blog
+    .save()
     .then((result) => {
       response.status(201).send(result);
     })
@@ -16,7 +17,8 @@ const createBlog = (request: Request, response: Response) => {
 };
 
 const readAllBlogs = (request: Request, response: Response) => {
-  Blog.find().sort({ createdAt : -1 })
+  Blog.find()
+    .sort({ createdAt: -1 })
     .then((result) => {
       response.status(200).send(result);
     })

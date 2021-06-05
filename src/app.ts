@@ -5,13 +5,16 @@ import log from './logger';
 import blogRoutes from './routes/blogRoutes';
 
 const app: Application = express();
-const port: number = (process.env.PORT) ? +process.env.PORT : 3000;
+const port: number = process.env.PORT ? +process.env.PORT : 3000;
 const dbURI: string = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@googlecloudcluster.n5v9j.mongodb.net/blogs-db?retryWrites=true&w=majority`;
 
 // middlewares
-app.use(morgan('dev', {
-  skip: (request: Request, response: Response) => process.env.NODE_ENV === 'production'
-}));
+app.use(
+  morgan('dev', {
+    skip: (request: Request, response: Response) =>
+      process.env.NODE_ENV === 'production',
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -20,11 +23,13 @@ mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   })
   .then((result) => {
     log.info('Connected to MongoDB database');
-    app.listen(port, () => log.info(`Server running at http://localhost:${port}...`));
+    app.listen(port, () =>
+      log.info(`Server running at http://localhost:${port}...`)
+    );
   })
   .catch((error: Error) => {
     log.error(error);
