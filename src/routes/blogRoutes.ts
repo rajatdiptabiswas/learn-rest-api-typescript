@@ -7,7 +7,6 @@ router.post('/add', blogController.createBlog);
 router.get('/', blogController.readAllBlogs);
 router.get('/:id', blogController.readBlogById);
 router.patch('/:id', blogController.partialUpdateBlogById);
-router.put('/:id', blogController.updateBlogById);
 router.delete('/:id', blogController.deleteBlogById);
 
 export default router;

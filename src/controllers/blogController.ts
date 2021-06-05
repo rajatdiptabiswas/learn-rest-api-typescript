@@ -48,17 +48,6 @@ const partialUpdateBlogById = (request: Request, response: Response) => {
     });
 };
 
-const updateBlogById = (request: Request, response: Response) => {
-  Blog.findByIdAndUpdate(request.params.id, request.body, { new: true, overwrite: true })
-    .then((result) => {
-      response.status(200).send(result);
-    })
-    .catch((error: Error) => {
-      log.error(error);
-      response.status(500).send(error.message);
-    });
-};
-
 const deleteBlogById = (request: Request, response: Response) => {
   Blog.findByIdAndDelete(request.params.id)
     .then((result) => {
@@ -75,6 +64,5 @@ export default {
   readAllBlogs,
   readBlogById,
   partialUpdateBlogById,
-  updateBlogById,
   deleteBlogById,
 };
