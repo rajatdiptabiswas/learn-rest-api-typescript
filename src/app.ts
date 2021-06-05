@@ -9,7 +9,9 @@ const port: number = (process.env.PORT) ? +process.env.PORT : 3000;
 const dbURI: string = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@googlecloudcluster.n5v9j.mongodb.net/blogs-db?retryWrites=true&w=majority`;
 
 // middlewares
-app.use(morgan('dev'));
+app.use(morgan('dev', {
+  skip: (request: Request, response: Response) => process.env.NODE_ENV === 'production'
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
