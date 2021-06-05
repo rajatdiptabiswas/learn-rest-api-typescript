@@ -38,7 +38,7 @@ app.get('/', (request: Request, response: Response) => {
 });
 
 // blogs
-app.use('/blogs', blogRoutes);
+app.use('/api/blogs', blogRoutes);
 
 // 404
 app.use((request: Request, response: Response) => {
