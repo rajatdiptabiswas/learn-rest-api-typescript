@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import log from '../logger';
-import Blog from '../models/blogs';
+import Blog from '../models/blogModel';
 
 const createBlog = (request: Request, response: Response) => {
   const blog = new Blog(request.body);
