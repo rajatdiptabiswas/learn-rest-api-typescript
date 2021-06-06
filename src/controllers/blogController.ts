@@ -2,63 +2,64 @@ import { Request, Response } from 'express';
 import log from '../logger';
 import Blog from '../models/blogModel';
 
-const createBlog = (request: Request, response: Response) => {
-  const blog = new Blog(request.body);
-
-  blog
-    .save()
-    .then((result) => {
-      response.status(201).send(result);
-    })
-    .catch((error: Error) => {
-      log.error(error);
-      response.status(500).send(error.message);
-    });
+const createBlog = async (request: Request, response: Response) => {
+  try {
+    const blog = new Blog(request.body);
+    const result = await blog.save();
+    return response.status(201).send(result);
+  } catch (error) {
+    log.error(error);
+    return response.status(500).send(error.message);
+  }
 };
 
-const readAllBlogs = (request: Request, response: Response) => {
-  Blog.find()
-    .sort({ createdAt: -1 })
-    .then((result) => {
-      response.status(200).send(result);
-    })
-    .catch((error: Error) => {
-      log.error(error);
-      response.status(500).send(error.message);
-    });
+const readAllBlogs = async (request: Request, response: Response) => {
+  try {
+    const result = await Blog.find().sort({ createdAt: -1 }).exec();
+    return response.status(200).send(result);
+  } catch (error) {
+    log.error(error);
+    return response.status(500).send(error.message);
+  }
 };
 
-const readBlogById = (request: Request, response: Response) => {
-  Blog.findById(request.params.id)
-    .then((result) => {
-      response.status(200).send(result);
-    })
-    .catch((error: Error) => {
-      log.error(error);
-      response.status(500).send(error.message);
-    });
+const readBlogById = async (request: Request, response: Response) => {
+  try {
+    const result = await Blog.findById(request.params.id).exec();
+    if (!result) {
+      return response.status(404).send('Blog Not Found :(');
+    }
+    return response.status(200).send(result);
+  } catch (error) {
+    log.error(error);
+    return response.status(500).send(error.message);
+  }
 };
 
-const partialUpdateBlogById = (request: Request, response: Response) => {
-  Blog.findByIdAndUpdate(request.params.id, request.body, { new: true })
-    .then((result) => {
-      response.status(200).send(result);
-    })
-    .catch((error: Error) => {
-      log.error(error);
-      response.status(500).send(error.message);
-    });
+const partialUpdateBlogById = async (request: Request, response: Response) => {
+  try {
+    const result = await Blog.findByIdAndUpdate(request.params.id, request.body, { new: true }).exec();
+    if (!result) {
+      return response.status(404).send('Blog Not Found :(');
+    }
+    return response.status(200).send(result);
+  } catch (error) {
+    log.error(error);
+    return response.status(500).send(error.message);
+  }
 };
 
-const deleteBlogById = (request: Request, response: Response) => {
-  Blog.findByIdAndDelete(request.params.id)
-    .then((result) => {
-      response.status(200).send(result);
-    })
-    .catch((error: Error) => {
-      log.error(error);
-      response.status(500).send(error.message);
-    });
+const deleteBlogById = async (request: Request, response: Response) => {
+  try {
+    const result = await Blog.findByIdAndDelete(request.params.id).exec();
+    if (!result) {
+      return response.status(404).send('Blog Not Found :(');
+    }
+    return response.status(200).send(result);
+  } catch (error) {
+    log.error(error);
+    return response.status(500).send(error.message);
+  }
 };
 
 export default {
