@@ -38,7 +38,11 @@ const readBlogById = async (request: Request, response: Response) => {
 
 const partialUpdateBlogById = async (request: Request, response: Response) => {
   try {
-    const result = await Blog.findByIdAndUpdate(request.params.id, request.body, { new: true }).exec();
+    const result = await Blog.findByIdAndUpdate(
+      request.params.id,
+      request.body,
+      { new: true }
+    ).exec();
     if (!result) {
       return response.status(404).send('Blog Not Found :(');
     }
