@@ -2,11 +2,10 @@ import express, { Application, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import log from './logger';
+import config from './config/config';
 import blogRoutes from './routes/blogRoutes';
 
 const app: Application = express();
-const port: number = process.env.PORT ? +process.env.PORT : 3000;
-const dbURI: string = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@googlecloudcluster.n5v9j.mongodb.net/blogs-db?retryWrites=true&w=majority`;
 
 // middlewares
 app.use(
@@ -20,15 +19,13 @@ app.use(express.urlencoded({ extended: true }));
 
 // connect to database
 mongoose
-  .connect(dbURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-  })
+  .connect(config.mongodb.url, config.mongodb.options)
   .then((result) => {
     log.info('Connected to MongoDB database');
-    app.listen(port, () =>
-      log.info(`Server running at http://localhost:${port}...`)
+    app.listen(config.server.port, () =>
+      log.info(
+        `Server running at http://${config.server.hostname}:${config.server.port}...`
+      )
     );
   })
   .catch((error: Error) => {
