@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import log from '../logger';
 import config from '../config/config';
 
-const extractJWT = (
+const verifyJWT = (
   request: Request,
   response: Response,
   next: NextFunction
@@ -20,11 +20,12 @@ const extractJWT = (
   jwt.verify(token, config.token.secret, (error, decoded) => {
     if (error) {
       log.error('Cannot verify token');
-      return response.status(404).send(error.message);
+      return response.status(403).send(error.message);
     }
+
     response.locals.jwt = decoded;
     next();
   });
 };
 
-export default extractJWT;
+export default verifyJWT;
