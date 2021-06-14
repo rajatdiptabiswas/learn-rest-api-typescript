@@ -15,7 +15,10 @@ const createBlog = async (request: Request, response: Response) => {
 
 const readAllBlogs = async (request: Request, response: Response) => {
   try {
-    const result = await Blog.find().sort({ createdAt: -1 }).exec();
+    const result = await Blog.find()
+      .populate('author', ['name', 'email', 'imageURL'])
+      .sort({ createdAt: -1 })
+      .exec();
     return response.status(200).send(result);
   } catch (error) {
     log.error(error);
@@ -25,7 +28,9 @@ const readAllBlogs = async (request: Request, response: Response) => {
 
 const readBlogById = async (request: Request, response: Response) => {
   try {
-    const result = await Blog.findById(request.params.id).exec();
+    const result = await Blog.findById(request.params.id)
+      .populate('author', ['name', 'email', 'imageURL'])
+      .exec();
     if (!result) {
       return response.status(404).send('Blog Not Found :(');
     }
