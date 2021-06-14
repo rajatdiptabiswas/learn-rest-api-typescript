@@ -30,9 +30,20 @@ const MONGODB = {
   options: MONGODB_OPTIONS,
 };
 
+const TOKEN_SECRET: string = process.env.TOKEN_SECRET || 'secret';
+const TOKEN_ISSUER: string = process.env.TOKEN_ISSUER || 'issuer';
+const TOKEN_EXPIRE_TIME: string = process.env.TOKEN_EXPIRE_TIME || '7d';
+
+const TOKEN = {
+  secret: TOKEN_SECRET,
+  issuer: TOKEN_ISSUER,
+  expireTime: TOKEN_EXPIRE_TIME,
+};
+
 const config = {
   server: SERVER,
   mongodb: MONGODB,
+  token: TOKEN,
 };
 
 export default config;
