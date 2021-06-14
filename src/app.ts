@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import log from './logger';
 import config from './config/config';
 import blogRoutes from './routes/blogRoutes';
+import userRoutes from './routes/userRoutes';
 
 const app: Application = express();
 
@@ -41,6 +42,9 @@ app.get('/', (request: Request, response: Response) => {
 
 // blogs
 app.use('/api/blogs', blogRoutes);
+
+// users
+app.use('/api/users', userRoutes);
 
 // 404
 app.use((request: Request, response: Response) => {
