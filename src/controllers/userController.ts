@@ -73,7 +73,7 @@ const login = async (request: Request, response: Response) => {
         return response.status(500).send(error.message);
       }
 
-      log.info('Token signed');
+      log.info('Token generated');
 
       user.password = '';
 
