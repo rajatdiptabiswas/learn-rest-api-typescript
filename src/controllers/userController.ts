@@ -20,6 +20,7 @@ const register = async (request: Request, response: Response) => {
     });
 
     log.debug('user = ' + JSON.stringify(user.toObject(), null, 2));
+    log.debug('password = ' + request.body.password);
 
     const result: IUser = await user.save();
 
