@@ -37,7 +37,7 @@ mongoose
 // routes
 // home
 app.get('/', (request: Request, response: Response) => {
-  response.redirect('/blogs');
+  response.redirect('/api/blogs');
 });
 
 // blogs
