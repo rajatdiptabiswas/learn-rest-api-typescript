@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 const SERVER_HOSTNAME: string = process.env.SERVER_HOSTNAME || 'localhost';
 const SERVER_PORT: number = process.env.SERVER_PORT
   ? +process.env.SERVER_PORT
